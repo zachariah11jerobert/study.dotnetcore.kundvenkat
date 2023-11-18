@@ -24,22 +24,11 @@ namespace EmployeeManagement.Controllers
         public ViewResult Details()
         {
             Employee model = _employeeRepository.GetEmployee(1);
+            ViewData["Employee"] = model;
+            ViewData["PageTitle"] = "Employee Details";
             return View(model);
         }
 
-        public ViewResult TestPage()
-        {
-            return View("Test");
-        }
 
-        public ViewResult TestAbsolutePathPage()
-        {
-            return View("MyViews/Test.cshtml");
-        }
-
-        public ViewResult TestRelativePathPage()
-        {
-            return View("../Test/Update");
-        }
     }
 }
