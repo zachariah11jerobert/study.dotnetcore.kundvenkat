@@ -23,31 +23,19 @@ namespace EmployeeManagement
         {
             if (env.IsDevelopment())
             {
-                app.UseDeveloperExceptionPage();
+                DeveloperExceptionPageOptions developerExceptionPageOptions = new DeveloperExceptionPageOptions()
+                {
+                    SourceCodeLineCount = 20
+                };
+                app.UseDeveloperExceptionPage(developerExceptionPageOptions);
             }
 
-            // Default files middleware
-            //app.UseDefaultFiles();
-
-            // ------- Default files middleware with Options
-            //DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
-            //defaultFilesOptions.DefaultFileNames.Clear();
-            //defaultFilesOptions.DefaultFileNames.Add("foo.html");
-            //app.UseDefaultFiles(defaultFilesOptions);
-
-            // -------- Static files middleware
-            //app.UseStaticFiles();
-
-            // -------- we can combine app.UseDefaultFiles & app.UseStaticFiles as app.UseFileServer
-
-            FileServerOptions fileServerOptions = new FileServerOptions();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
-            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
-            app.UseFileServer(fileServerOptions);
+       
+            app.UseFileServer();
 
             app.Run(async (context) =>
             {
-
+                throw new Exception("Some error processing the Request");
                 await context.Response.WriteAsync("Hello world !!!");
                 logger.LogInformation("Request handled  & Response Produced");
             });
