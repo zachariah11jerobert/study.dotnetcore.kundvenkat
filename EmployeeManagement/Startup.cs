@@ -15,6 +15,10 @@ namespace EmployeeManagement
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+
+            //services.AddMvcCore();
+
+            // ----- since .AddMvc call .AddMvcCore no need to explicitly call
             services.AddMvc();
         }
 
