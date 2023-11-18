@@ -19,34 +19,37 @@ namespace EmployeeManagement
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env,ILogger<Startup>  logger)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILogger<Startup> logger)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
 
-            app.Use(async (context,next) =>
-            {
-                await context.Response.WriteAsync("Hello from  1st  Middleware!!!");
-                logger.LogInformation("Middleware1  :  Incoming  Request");
-                await  next();
-                logger.LogInformation("Middleware1  :  Outgoing Responnse");
-            });
+            // Default files middleware
+            //app.UseDefaultFiles();
 
-            app.Use(async (context, next) =>
-            {
-                await context.Response.WriteAsync("Hello from  2nd  Middleware!!!");
-                logger.LogInformation("Middleware2  :  Incoming  Request");
-                await next();
-                logger.LogInformation("Middleware2  :  Outgoing Responnse");
-            });
+            // ------- Default files middleware with Options
+            //DefaultFilesOptions defaultFilesOptions = new DefaultFilesOptions();
+            //defaultFilesOptions.DefaultFileNames.Clear();
+            //defaultFilesOptions.DefaultFileNames.Add("foo.html");
+            //app.UseDefaultFiles(defaultFilesOptions);
+
+            // -------- Static files middleware
+            //app.UseStaticFiles();
+
+            // -------- we can combine app.UseDefaultFiles & app.UseStaticFiles as app.UseFileServer
+
+            FileServerOptions fileServerOptions = new FileServerOptions();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Clear();
+            fileServerOptions.DefaultFilesOptions.DefaultFileNames.Add("foo.html");
+            app.UseFileServer(fileServerOptions);
 
             app.Run(async (context) =>
             {
-                
-                await context.Response.WriteAsync("Hello from  3nd  Middleware!!!");
-                logger.LogInformation("Middleware3  : Request hanndled  & Response Produced");
+
+                await context.Response.WriteAsync("Hello world !!!");
+                logger.LogInformation("Request handled  & Response Produced");
             });
         }
     }
